@@ -8,8 +8,12 @@ from test_framework.test_utils import enable_executor_hook
 
 
 def random_sampling(k, A):
-    # TODO - you fill in here.
-    return
+    from random import randint
+    end_of_rand_index = 0
+    while end_of_rand_index < k:
+        rand_index = randint(end_of_rand_index, len(A) - 1)
+        A[end_of_rand_index], A[rand_index] = A[rand_index], A[end_of_rand_index]
+        end_of_rand_index += 1
 
 
 @enable_executor_hook
