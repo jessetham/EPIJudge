@@ -7,8 +7,32 @@ from test_framework.test_utils import enable_executor_hook
 
 
 def lca(tree, node0, node1):
-    # TODO - you fill in here.
-    return None
+    def dfs(node, target, path):
+        if not node:
+            return False
+        if node.data == target.data:
+            path.append(node)
+            return True
+        # Recurse with dfs to look for the target
+        if dfs(node.left, target, path) or dfs(node.right, target, path):
+            path.append(node)
+            return True
+        else:
+            return False
+
+    node0_path, node1_path = [], []
+    # Could use the return booleans to confirm that there is a path if we
+    # wanted to
+    is_path_to_node0 = dfs(tree, node0, node0_path)
+    is_path_to_node1 = dfs(tree, node1, node1_path)
+
+    last_common_node = None
+    for node_in_path0, node_in_path1 in zip(reversed(node0_path), reversed(node1_path)):
+        if node_in_path0 != node_in_path1:
+            break
+        last_common_node = node_in_path0
+    return last_common_node
+
 
 
 @enable_executor_hook

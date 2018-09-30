@@ -7,8 +7,23 @@ from test_framework.test_utils import enable_executor_hook
 
 
 def lca(node0, node1):
-    # TODO - you fill in here.
-    return None
+    def get_depth(node):
+        depth = 0
+        while node:
+            depth += 1
+            node = node.parent
+        return depth - 1
+    node0_depth, node1_depth = get_depth(node0), get_depth(node1)
+    deeper, shallower = (node0, node1) if node0_depth >= node1_depth else (node1, node0)
+    # Bring the deeper node up to the shallower node's depth
+    for _ in range(abs(node0_depth - node1_depth)):
+        deeper = deeper.parent
+    # Increment both nodes until they equal each other or if one of them becomes None
+    while deeper and shallower:
+        if deeper == shallower:
+            break
+        deeper, shallower = deeper.parent, shallower.parent
+    return deeper
 
 
 @enable_executor_hook
