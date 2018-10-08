@@ -12,8 +12,33 @@ Coordinate = collections.namedtuple('Coordinate', ('x', 'y'))
 
 
 def search_maze(maze, s, e):
-    # TODO - you fill in here.
-    return []
+    def dfs(coord, results):
+        if coord == e:
+            results.append(e)
+            return True
+        if not in_bounds(coord):
+            return False
+        if maze[coord.x][coord.y] == WHITE:
+            maze[coord.x][coord.y] = BLACK
+            if dfs(Coordinate(coord.x + 1, coord.y), results) or \
+                dfs(Coordinate(coord.x - 1, coord.y), results) or \
+                dfs(Coordinate(coord.x, coord.y + 1), results) or \
+                dfs(Coordinate(coord.x, coord.y - 1), results):
+                results.append(coord)
+                return True
+        else:
+            return False
+
+    def in_bounds(coord):
+        if coord.x >= 0 and coord.x < len(maze) and \
+            coord.y >= 0 and coord.y < len(maze[0]):
+            return True
+        else:
+            return False
+
+    results = []
+    dfs(s, results)
+    return list(reversed(results))
 
 
 def path_element_is_feasible(maze, prev, cur):

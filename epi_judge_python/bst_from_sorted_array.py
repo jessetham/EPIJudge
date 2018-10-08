@@ -8,8 +8,21 @@ from test_framework.test_utils import enable_executor_hook
 
 
 def build_min_height_bst_from_sorted_array(A):
-    # TODO - you fill in here.
-    return None
+    from bst_node import BstNode
+    def build_node(A, low, high):
+        # Base case
+        if high - low < 1:
+            return None
+        if high - low == 1:
+            return BstNode(A[low])
+        mid = ((high - low) // 2) + low
+        node = BstNode(A[mid])
+        node.left = build_node(A, low, mid)
+        node.right = build_node(A, mid + 1, high)
+        return node
+    if len(A) == 0:
+        return None
+    return build_node(A, 0, len(A))
 
 
 @enable_executor_hook
