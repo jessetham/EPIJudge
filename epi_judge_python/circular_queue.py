@@ -4,20 +4,36 @@ from test_framework.test_failure import TestFailure
 
 class Queue:
     def __init__(self, capacity):
-        # TODO - you fill in here.
-        return
+        self.queue = [0] * capacity
+        self.head, self.tail = 0, 0
 
     def enqueue(self, x):
-        # TODO - you fill in here.
-        return
+        self.queue[self.tail] = x
+        self.tail += 1
+        if self.tail >= len(self.queue):
+            self.tail = 0
+        if self.tail == self.head:
+            old_length = len(self.queue)
+            self.queue.extend([0] * old_length)
+            for i in range(self.tail, old_length):
+                self.queue[old_length+i] = self.queue[i]
+            self.head = self.head + old_length
 
     def dequeue(self):
-        # TODO - you fill in here.
-        return 0
+        if self.head == self.tail:
+            raise Exception
+        result = self.queue[self.head]
+        self.head += 1
+        if self.head >= len(self.queue):
+            self.head = 0
+        return result
 
     def size(self):
-        # TODO - you fill in here.
-        return 0
+        if self.head <= self.tail:
+            size = self.tail - self.head
+        else:
+            size = (len(self.queue) - self.head) + self.tail
+        return size
 
 
 def queue_tester(ops):
