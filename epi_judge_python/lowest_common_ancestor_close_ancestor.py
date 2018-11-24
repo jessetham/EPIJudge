@@ -7,9 +7,26 @@ from test_framework.test_utils import enable_executor_hook
 
 
 def lca(node0, node1):
-    # TODO - you fill in here.
-    return None
+    def is_parent_lca(node):
+        if node in seen_nodes:
+            return node, True
+        seen_nodes.add(node)
+        return node.parent, False
 
+    seen_nodes = set()
+    while node0 != None and node1 != None:
+        node0, found0 = is_parent_lca(node0)
+        node1, found1 = is_parent_lca(node1)
+        if found0 or found1:
+            return node0 if found0 else node1
+    while node0 != None:
+        node0, found0 = is_parent_lca(node0)
+        if found0:
+            return node0
+    while node1 != None:
+        node1, found1 = is_parent_lca(node1)
+        if found1:
+            return node1
 
 @enable_executor_hook
 def lca_wrapper(executor, tree, node0, node1):
