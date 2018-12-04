@@ -5,11 +5,19 @@ from test_framework.test_failure import PropertyName
 
 MinMax = collections.namedtuple('MinMax', ('smallest', 'largest'))
 
-
 def find_min_max(A):
-    # TODO - you fill in here.
-    return MinMax(0, 0)
+    return find_min_max_1(A)
 
+def find_min_max_1(A):
+    if len(A) == 0:
+        return None
+    low_so_far, high_so_far = A[0], A[0]
+    for i in range(1, len(A)):
+        if A[i] < low_so_far:
+            low_so_far = A[i]
+        elif A[i] > high_so_far:
+            high_so_far = A[i]
+    return MinMax(low_so_far, high_so_far)
 
 def res_printer(prop, value):
     def fmt(x):

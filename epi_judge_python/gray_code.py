@@ -6,9 +6,23 @@ from test_framework.test_utils import enable_executor_hook
 
 
 def gray_code(num_bits):
-    # TODO - you fill in here.
-    return []
+    if num_bits == 0 :
+        return [0]
+    codes = []
+    generate([], num_bits, codes, False)
+    return codes
 
+def generate(code, n, codes, reverse):
+    if len(code) == n:
+        codes.append(int(''.join(code), 2))
+        return
+    bits = ['0', '1'] if not reverse else ['1', '0']
+    code.append(bits[0])
+    generate(code, n, codes, False)
+    code.pop()
+    code.append(bits[1])
+    generate(code, n, codes, True)
+    code.pop()
 
 @enable_executor_hook
 def gray_code_wrapper(executor, num_bits):

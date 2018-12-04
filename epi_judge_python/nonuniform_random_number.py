@@ -8,8 +8,15 @@ from test_framework.test_utils import enable_executor_hook
 
 
 def nonuniform_random_number_generation(values, probabilities):
-    # TODO - you fill in here.
-    return 0
+    from bisect import bisect_left
+    from random import random
+    probability_ranges = [1.] * len(probabilities)
+    sum_so_far = 0
+    for i in range(len(probabilities)):
+        probability_ranges[i] = sum_so_far
+        sum_so_far += probabilities[i]
+    i = bisect_left(probability_ranges, random()) - 1
+    return values[i]
 
 
 @enable_executor_hook

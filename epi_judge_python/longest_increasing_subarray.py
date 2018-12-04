@@ -6,8 +6,15 @@ Subarray = collections.namedtuple('Subarray', ('start', 'end'))
 
 
 def find_longest_increasing_subarray(A):
-    # TODO - you fill in here.
-    return Subarray(0, 0)
+    l, max_window = 0, Subarray(0, 0)
+    prev = float('-inf')
+    for i, val in enumerate(A):
+        if prev >= val:
+            l = i
+        max_window = Subarray(l, i) if (i - l + 1) > (max_window.end - max_window.start + 1) \
+            else max_window
+        prev = val
+    return max_window
 
 
 def find_longest_increasing_subarray_wrapper(A):

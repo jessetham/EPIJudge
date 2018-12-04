@@ -2,17 +2,26 @@ import functools
 
 from test_framework import generic_test
 from test_framework.test_utils import enable_executor_hook
-
+from implementations import MinMaxQueue
 
 class TrafficElement:
     def __init__(self, time, volume):
         self.time = time
         self.volume = volume
 
-
 def calculate_traffic_volumes(A, w):
-    # TODO - you fill in here.
-    return []
+    from collections import deque
+    results = []
+    min_max_q = MinMaxQueue()
+    time_q = deque()
+    for elem in A:
+        while len(min_max_q) > 0 and (elem.time - time_q[0]) > w:
+            min_max_q.remove()
+            time_q.popleft()
+        min_max_q.push(elem.volume)
+        time_q.append(elem.time)
+        results.append(TrafficElement(elem.time, min_max_q.get_max()))
+    return results
 
 
 @enable_executor_hook

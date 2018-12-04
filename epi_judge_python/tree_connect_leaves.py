@@ -6,8 +6,20 @@ from test_framework.test_utils import enable_executor_hook
 
 
 def create_list_of_leaves(tree):
-    # TODO - you fill in here.
-    return []
+    if not tree:
+        return []
+    result = []
+    stack = [tree]
+    while stack:
+        node = stack.pop()
+        if node.left == None and node.right == None:
+            result.append(node)
+            continue
+        if node.right:
+            stack.append(node.right)
+        if node.left:
+            stack.append(node.left)
+    return result
 
 
 @enable_executor_hook

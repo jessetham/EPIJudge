@@ -6,9 +6,33 @@ from test_framework.test_utils import enable_executor_hook
 
 
 def exterior_binary_tree(tree):
-    # TODO - you fill in here.
-    return []
+    if not tree:
+        return []
 
+    result = [tree]
+    # Get left exterior
+    node = tree.left
+    while node and (node.left is not node.right):
+        result.append(node)
+        node = node.left if node.left else node.right
+    # Get leaves
+    stack = [tree]
+    while stack:
+        node = stack.pop()
+        if node.left == None and node.right == None and node is not tree:
+            result.append(node)
+            continue
+        if node.right:
+            stack.append(node.right)
+        if node.left:
+            stack.append(node.left)
+    # Get right exterior
+    node = tree.right
+    while node and (node.right is not node.left):
+        stack.append(node)
+        node = stack[-1].right if stack[-1].right else stack[-1].left
+    result.extend(reversed(stack))
+    return result
 
 def create_output_list(L):
     if any(l is None for l in L):

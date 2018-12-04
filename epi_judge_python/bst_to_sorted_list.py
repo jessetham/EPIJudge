@@ -6,9 +6,39 @@ from test_framework.test_utils import enable_executor_hook
 
 
 def bst_to_doubly_linked_list(tree):
-    # TODO - you fill in here.
-    return None
+    if not tree:
+        return None
+    tree.left = goto_left(tree.left, tree)
+    tree.right = goto_right(tree.right, tree)
+    while tree.left:
+        tree = tree.left
+    return tree
 
+def goto_left(node, parent):
+    if not node:
+        return None
+    if not node.left and not node.right:
+        node.right = parent
+        return node
+    node.left = goto_left(node.left, node)
+    node.right = goto_right(node.right, node)
+    while node.right:
+        node = node.right
+    node.right = parent
+    return node
+
+def goto_right(node, parent):
+    if not node:
+        return None
+    if not node.left and not node.right:
+        node.left = parent
+        return node
+    node.left = goto_left(node.left, node)
+    node.right = goto_right(node.right, node)
+    while node.left:
+        node = node.left
+    node.left = parent
+    return node
 
 @enable_executor_hook
 def bst_to_doubly_linked_list_wrapper(executor, tree):
